@@ -1,0 +1,38 @@
+# Project Context & Architecture: elobour-driver
+You are an expert mobile engineer working on `elobour-driver`, the driver **expense reporting** mobile app (Android & iOS) for EgyChina / Souq El Obour logistics staff.
+
+## CRITICAL ARCHITECTURAL RULE (NO WORDPRESS)
+- This app operates 100% on the `egychina-erp` backend. There is no WordPress or third-party delivery plugin client.
+- Base URL: `process.env.EXPO_PUBLIC_API_URL` or default `https://erp.echinamart.com`.
+- Endpoints actually used today:
+  - `POST /api/driver/login`
+  - `GET /api/driver/expenses`
+  - `POST /api/driver/expenses` (multipart with receipt photo)
+- Auth headers: `x-api-key` plus optional `Authorization: Bearer <token>` (see `src/lib/config.ts` / `src/lib/api.ts`).
+
+## What This App Actually Is (do not invent delivery-dispatch features)
+- **Implemented:** Arabic RTL Expo app for drivers to submit expense claims (fuel/toll/oil/maintenance) with photo capture, and to view expense history with approval status.
+- **Expense categories:** `FUEL` | `TOLL` | `OIL` | `MAINTENANCE`
+- **Expense statuses:** `PENDING` | `APPROVED` | `PARTIAL` | `REJECTED`
+- **Not implemented in this repo:** order queue, delivery status machine (Assigned → Delivered), WhatsApp/phone deep-links, maps navigation, COD collection confirmation, offline delivery-status queue.
+- If asked to build delivery-dispatch features, treat that as **new product work** requiring ERP driver APIs first — do not pretend they already exist here.
+
+## Tech Stack (Strictly Enforced — matches this repo)
+- Framework: Expo SDK **57**, React Native **0.86**, React 19, TypeScript.
+- Routing: **Expo Router** under `src/app/` (`login`, tabs `(app)/index` new expense, `(app)/history`).
+- Storage: `expo-secure-store` + `@react-native-async-storage/async-storage` for token/user/remembered credentials (`src/lib/storage.ts`, `src/lib/credentials.ts`).
+- Networking: native `fetch` / `XMLHttpRequest` for multipart (no axios).
+- UI: React Native primitives + Ionicons; field-ready large tap targets; clear status badges.
+- Notable deps present: `expo-image-picker`, `react-native-safe-area-context`, `react-native-screens`, gesture-handler, reanimated.
+
+## Strict Cursor Composer & Agent Rules
+1. NO PARTIAL CODE: Write 100% complete code. Never truncate files or use `// ... existing code`. Include all imports, types, and styles.
+2. FIELD-READY UX: Drivers use this outdoors. Large high-contrast buttons; clear loading/error states for weak networks; never swallow server `message` / `error`.
+3. STRICT REACT NATIVE SYNTAX: Valid RN + Expo modules only. Full Arabic RTL text and layout alignment.
+4. Do not add WordPress/Woo clients or hardcode fake expense statuses outside the enum above.
+
+## Mandatory Development Workflow Sequence
+1. ERP API Sync: Confirm `/api/driver/*` contract in `egychina-erp` before changing mobile payloads.
+2. Lib Layer: Update `src/lib/api.ts`, `types.ts`, `config.ts`, auth/storage as needed.
+3. UI: Update screens under `src/app/` and components (`ExpenseForm`, `PhotoCapture`, `StatusBadge`, etc.) with resilient error handling.
+4. Before declaring done: `npx expo lint` and `npx tsc --noEmit` when practical.

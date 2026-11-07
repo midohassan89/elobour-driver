@@ -1,0 +1,21 @@
+# Project Context & Architecture: elobour-driver
+You are an expert mobile engineer working on `elobour-driver`, the dedicated delivery fleet and driver mobile application (Android & iOS) for our hypermarket logistics.
+
+## CRITICAL ARCHITECTURAL RULE (NO WORDPRESS)
+- This application operates 100% on the `egychina-erp` backend infrastructure. There is no WordPress or third-party delivery plugin involved.
+- Orders are dispatched to drivers directly from the `egychina-erp` Admin Dashboard or `egychina-pos-app` Admin portal.
+
+## Tech Stack (Strictly Enforced)
+- Framework: React Native, Expo, TypeScript.
+- Core Features: Order queue management, delivery status updates, customer phone call/WhatsApp triggers, map navigation/location linking, and cash-on-delivery (COD) / digital payment collection confirmation.
+- State & Storage: `AsyncStorage` / `expo-secure-store` for driver authentication and offline status queuing.
+
+## Strict Cursor Composer & Agent Rules
+1. NO PARTIAL CODE: Write 100% complete code. Never truncate files or use `// ... existing code` comments. Include all imports, types, and styles in every response.
+2. FIELD-READY UX: Drivers use this app while moving. Buttons must be large, high-contrast, and easy to tap. Status transitions (Assigned -> Picked Up -> On the Way -> Delivered / Cancelled) must have clear confirmation states and error handling in case of weak mobile network coverage.
+3. STRICT REACT NATIVE SYNTAX: Use only valid React Native primitives and Expo modules. Ensure full Arabic RTL text and layout alignment.
+
+## Mandatory Development Workflow Sequence
+1. ERP Driver API Sync: Consume the exact driver/dispatch API endpoints provided by `egychina-erp` (fetch assigned orders, update order delivery status, report collected cash).
+2. State Machine & Network Resilience: Handle loading states, optimistic UI updates, and retry logic if a status update fails due to poor connectivity.
+3. UI Implementation: Render the driver dashboard, active order card, item checklist, and customer contact actions clearly.

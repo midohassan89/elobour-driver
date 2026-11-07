@@ -1,23 +1,35 @@
 {
   "expo": {
-    "name": "elobour-driver",
+    "name": "Elobour Driver",
     "slug": "elobour-driver",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "elobourdriver",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "supportsTablet": false,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSCameraUsageDescription": "يلزم الوصول للكاميرا لتصوير العداد والإيصالات عند تسجيل المصروفات.",
+        "NSPhotoLibraryUsageDescription": "يلزم الوصول للصور عند الحاجة لمراجعة الصور الملتقطة."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0B3D2E",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.CAMERA"
+      ],
+      "package": "com.midohassan89.elobourdriver"
     },
     "web": {
       "output": "static",
@@ -28,15 +40,30 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#0B3D2E",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "يلزم الوصول للكاميرا لتصوير العداد والإيصالات عند تسجيل المصروفات.",
+          "photosPermission": "يلزم الوصول للصور عند الحاجة لمراجعة الصور الملتقطة.",
+          "microphonePermission": false
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9428a3ec-e1aa-457b-bf79-ec18902a03a5"
+      }
     }
   }
 }
